@@ -50,6 +50,7 @@ public class BoardService {
     @Transactional
     public void update(BoardUpdateDto dto) {
 
+
         final User user = userRepository.findByUsername(dto.getUsername())
                 .orElseThrow(() -> new RuntimeException("일치하는 사용자가 없습니다."));
 
