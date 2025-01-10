@@ -70,7 +70,7 @@ public class BoardService {
                 .orElseThrow(() -> new RuntimeException("일치하는 사용자가 없습니다."));
 
         final Board board = boardRepository.findById(dto.getId())
-                .orElseThrow(() -> new RuntimeException("일치하는 게시물이 없습니다."));
+                .orElseThrow(() -> new RuntimeException("일치하는 게시이 없습니다."));
 
         if(user.getUsername().equals(dto.getUsername())) {
             boardRepository.delete(board);
