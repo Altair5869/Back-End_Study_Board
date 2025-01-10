@@ -22,9 +22,9 @@ import java.time.LocalDateTime;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
-    LocalDateTime now = LocalDateTime.now();
 
-    @Transactional
+
+    @Transactional(readOnly = true)
     public Page<Board> getBoards(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return boardRepository.findAll(pageable);
@@ -33,6 +33,7 @@ public class BoardService {
 
     @Transactional
     public void create(BoardDto boardDto) {
+        LocalDateTime now = LocalDateTime.now();
         final User user = userRepository.findByUsername(boardDto.getUsername())
                 .orElseThrow(() -> new RuntimeException("일치하는 사용자가 없습니다."));
 
