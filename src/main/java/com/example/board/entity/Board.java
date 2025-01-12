@@ -25,6 +25,7 @@ public class Board {
     @Column(updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
