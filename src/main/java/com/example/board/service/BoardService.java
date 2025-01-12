@@ -32,9 +32,9 @@ public class BoardService {
 
 
     @Transactional
-    public void create(BoardDto boardDto) {
+    public void create(BoardDto boardDto, String identity) {
         LocalDateTime now = LocalDateTime.now();
-        final User user = userRepository.findByUsername(boardDto.getUsername())
+        final User user = userRepository.findByIdentity(identity)
                 .orElseThrow(() -> new RuntimeException("일치하는 사용자가 없습니다."));
 
         Board board = Board.builder()
@@ -50,12 +50,13 @@ public class BoardService {
     @Transactional
     public void update(BoardUpdateDto dto) {
 
-
-        final User user = userRepository.findByUsername(dto.getUsername())
-                .orElseThrow(() -> new RuntimeException("일치하는 사용자가 없습니다."));
-
         final Board board = boardRepository.findById(dto.getId())
                 .orElseThrow(() -> new RuntimeException("일치하는 게시물이 없습니다."));
+
+        final String username = board.getUser().getUsername();
+
+        final User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("일치하는 사용자가 없습니다."));
 
         if(user.getUsername().equals(dto.getUsername())) {
             board.update(dto.getTitle(), dto.getContent());
@@ -68,11 +69,15 @@ public class BoardService {
 
     @Transactional
     public void delete(BoardDeleteDto dto) {
-        final User user = userRepository.findByUsername(dto.getUsername())
-                .orElseThrow(() -> new RuntimeException("일치하는 사용자가 없습니다."));
-
         final Board board = boardRepository.findById(dto.getId())
                 .orElseThrow(() -> new RuntimeException("일치하는 게시물이 없습니다."));
+
+        final String username = board.getUser().getUsername();
+
+//        final String userid = board.getUser().getIdentity();
+
+        final User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("일치하는 사용자가 없습니다."));
 
         if(user.getUsername().equals(dto.getUsername())) {
             boardRepository.delete(board);

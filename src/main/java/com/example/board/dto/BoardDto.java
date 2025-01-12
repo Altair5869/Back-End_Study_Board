@@ -14,5 +14,4 @@ import java.time.LocalDateTime;
 public class BoardDto {
     String title;
     String content;
-    String username;
 }
